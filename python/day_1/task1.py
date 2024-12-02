@@ -10,5 +10,4 @@ with open("input.txt", "r") as file:
     right.sort()
     for i in range(len(right)):
         diff += abs(left[i] - right[i])
-
 print(diff)
