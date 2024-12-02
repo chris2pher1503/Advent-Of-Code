@@ -1,32 +1,33 @@
 count = 0
 safe = []
 
+
+def is_safe(nums):
+    sorted_nums_increase = sorted(nums)
+    sorted_nums_decrease = sorted(nums, reverse=True)
+    res_increase = sorted_nums_increase == nums
+    res_decrease = sorted_nums_decrease == nums
+    differences = [abs(nums[i] - nums[i + 1]) for i in range(len(nums) - 1)]
+    return (res_increase or res_decrease) and all(
+        1 <= diff <= 3 for diff in differences
+    )
+
+
 with open("input.txt", "r") as file:
     for line in file:
         nums = list(map(int, line.split()))
-        sorted_nums_increase = sorted(nums)
-        sorted_nums_decrease = sorted(nums, reverse=True)
-        res_increase = sorted_nums_increase == nums
-        res_decrease = sorted_nums_decrease == nums
 
-        difference = []
-        for i in range(len(nums) - 1):
-            diff = abs(nums[i] - nums[i + 1])
-            if 1 <= diff <= 3:
-                difference.append(True)
-            else:
-                difference.append(False)
-
-        if (res_decrease or res_increase) and all(difference):
+        if is_safe(nums):
             safe.append(nums)
             count += 1
+            continue
 
         for i in range(len(nums)):
             nums_removed = nums[:i] + nums[i + 1 :]
-            if safe(nums_removed):
+            if is_safe(nums_removed):
                 safe.append(nums)
                 count += 1
                 break
 
-    print(safe)
-    print(count)
+print(safe)
+print(count)
